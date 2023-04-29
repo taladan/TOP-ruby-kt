@@ -1,5 +1,4 @@
 require 'colorize'
-require 'pry-byebug'
 
 # Handle display of chess board of `n x m` size.  Default size is 8 x 8
 class BoardDisplay
@@ -38,7 +37,6 @@ class BoardDisplay
   def flip_squares(pixels)
     array = []
     pixels.each_with_index do |pixel, index|
-      # binding.pry
       array << if index.even?
                  pixel.on_black
                else
