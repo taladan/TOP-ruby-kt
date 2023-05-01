@@ -101,7 +101,7 @@ class Board
       if on_board?(calculated_position)
         square.neighbors_positions[k] = calculated_position
         neighbor = find_square_by_position(square.neighbors_positions[k])
-        # add_edge(square.name, neighbor.name)
+        add_edge(square.name, neighbor.name)
       else
         square.neighbors_positions[k] = nil
       end
@@ -126,6 +126,6 @@ class Board
     @squares[from].neighbors_name[to] = true
     return unless undirected
 
-    squares[to].neighbors_name[from] = true
+    @squares[to].neighbors_name[from] = true
   end
 end
