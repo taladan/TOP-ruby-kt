@@ -10,7 +10,7 @@ class Square
 
   def initialize(name)
     @name = name
-    @neighbors_position = []
+    @neighbors_position = {}
     @neighbors_name = []
     @position = []
     @contents = nil
