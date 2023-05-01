@@ -4,6 +4,7 @@ require_relative 'square'
 # Generate a graph called 'Board' of nodes called 'squares'
 class Board
   attr_accessor :vertices
+  attr_reader :columns, :rows
 
   def initialize(columns = 8, rows = 8)
     @columns = columns
