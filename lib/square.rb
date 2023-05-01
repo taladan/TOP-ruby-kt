@@ -32,6 +32,6 @@ class Square
   private
 
   def build_view
-    "      \n  #{@contents.blue || ' '}   \n      "
+    "      \n  #{@contents&.blue || ' '}   \n      "
   end
 end
