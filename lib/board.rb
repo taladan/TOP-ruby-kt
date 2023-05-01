@@ -57,8 +57,6 @@ class Board
     squares.length
   end
 
-  require 'pry-byebug'
-
   def assign_square_positions
     position_array = generate_2d_array(@columns)
     @squares.each_with_index do |square, index|
