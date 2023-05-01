@@ -42,6 +42,17 @@ class Board
     nil
   end
 
+  def find_vertex_by_position(position)
+    @squares.each do |square|
+      return square if square.position == position
+    end
+  end
+
+  def get_name_by_position(position)
+    square = find_vertex_by_position(position)
+    square.name
+  end
+
   def count
     squares.length
   end
