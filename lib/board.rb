@@ -22,19 +22,6 @@ class Board
     generate_board
   end
 
-  def add_square(name)
-    @squares << Square.new(name)
-  end
-
-  def add_edge(start_name, end_name, undirected = true)
-    from = @squares.index { |square| square.name == start_name }
-    to = @squares.index { |square| square.name == end_name }
-    @squares[from].neighbors_name[to] = true
-    return unless undirected
-
-    squares[to].neighbors_name[from] = true
-  end
-
   def find_square_by_name(name)
     @squares.each do |square|
       return square if square.name == name
@@ -57,28 +44,12 @@ class Board
     squares.length
   end
 
-  def assign_square_positions
-    position_array = generate_2d_array(@columns)
-    @squares.each_with_index do |square, index|
-      square.position = position_array[index]
-    end
-    nil
-  end
-
-  def assign_neighbors(square)
-    square = find_square_by_name(square)
-
-    @nb.each do |_, v|
-      square.neighbors_position << [square.position[0] + v[0], square.position[1] + v[1]]
-    end
-  end
-
   private
 
   def generate_board
-    # stop = "#{alphas[@columns - 1]}#{@columns - 1}"
     combine_columns_and_rows.to_a.each { |square| add_square(square) }
     assign_square_positions
+    @squares.each { |square| assign_neighbors(square) }
   end
 
   def make_columns
@@ -114,5 +85,47 @@ class Board
     a = (0..columns - 1).to_a
     b = (0..columns - 1).to_a
     a.product(b)
+  end
+
+  def assign_square_positions
+    position_array = generate_2d_array(@columns)
+    @squares.each_with_index do |square, index|
+      square.position = position_array[index]
+    end
+    nil
+  end
+
+  def assign_neighbors(square)
+    @nb.each do |k, v|
+      calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
+      if on_board?(calculated_position)
+        square.neighbors_positions[k] = calculated_position
+        neighbor = find_square_by_position(square.neighbors_positions[k])
+        # add_edge(square.name, neighbor.name)
+      else
+        square.neighbors_positions[k] = nil
+      end
+    end
+  end
+
+  def on_board?(position)
+    rows = (0..@rows - 1).to_a
+    cols = (0..@columns - 1).to_a
+    row = position[0]
+    col = position[1]
+    rows.include?(row) && cols.include?(col)
+  end
+
+  def add_square(name)
+    @squares << Square.new(name)
+  end
+
+  def add_edge(start_name, end_name, undirected = true)
+    from = @squares.index { |square| square.name == start_name }
+    to = @squares.index { |square| square.name == end_name }
+    @squares[from].neighbors_name[to] = true
+    return unless undirected
+
+    squares[to].neighbors_name[from] = true
   end
 end
