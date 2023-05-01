@@ -35,21 +35,21 @@ class Board
     squares[to].neighbors_name[from] = true
   end
 
-  def find_vertex_by_name(name)
+  def find_square_by_name(name)
     @squares.each do |square|
       return square if square.name == name
     end
     nil
   end
 
-  def find_vertex_by_position(position)
+  def find_square_by_position(position)
     @squares.each do |square|
       return square if square.position == position
     end
   end
 
   def get_name_by_position(position)
-    square = find_vertex_by_position(position)
+    square = find_square_by_position(position)
     square.name
   end
 
@@ -68,7 +68,7 @@ class Board
   end
 
   def assign_neighbors(square)
-    square = find_vertex_by_name(square)
+    square = find_square_by_name(square)
 
     @nb.each do |_, v|
       square.neighbors_position << [square.position[0] + v[0], square.position[1] + v[1]]
