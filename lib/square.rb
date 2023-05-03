@@ -5,32 +5,21 @@ require_relative 'display'
 # Creates a graph node named 'square'
 class Square
   attr_accessor :name,
-                :neighbors_positions,
-                :neighbors_name,
+                :neighbors,
                 :position,
                 :contents
 
   def initialize(name)
     @name = name
-    @neighbors_positions = {}
-    @neighbors_name = []
     @neighbors = {
-      n: { name: nil,
-           position: nil },
-      ne: { name: nil,
-            position: nil },
-      e: { name: nil,
-           position: nil },
-      se: { name: nil,
-            position: nil },
-      s: { name: nil,
-           position: nil },
-      sw: { name: nil,
-            position: nil },
-      w: { name: nil,
-           position: nil },
-      nw: { name: nil,
-            position: nil }
+      n: { square: nil },
+      ne: { square: nil },
+      e: { square: nil },
+      se: { square: nil },
+      s: { square: nil },
+      sw: { square: nil },
+      w: { square: nil },
+      nw: { square: nil }
     }
     @position = []
     @contents = nil
