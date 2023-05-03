@@ -37,10 +37,14 @@ class Board
 
   private
 
+  require 'pry-byebug'
   def generate_board
     combine_columns_and_rows.to_a.each { |square| @squares << Square.new(square) }
     assign_square_positions
-    @squares.each { |square| assign_neighbors(square) }
+    @squares.each do |square|
+      assign_neighbors(square)
+      square.assign_color
+    end
   end
 
   def combine_columns_and_rows
@@ -76,11 +80,11 @@ class Board
     }.each do |k, v|
       calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
       if on_board?(calculated_position)
-        square.neighbors_positions[k] = calculated_position
-        neighbor = find_square_by_position(square.neighbors_positions[k])
-        add_edge(square.name, neighbor.name)
+        # square.neighbor[k] = calculated_position
+        neighbor = find_square_by_position(calculated_position)
+        add_edge(square, neighbor, k)
       else
-        square.neighbors_positions[k] = nil
+        square.neighbors[k] = nil
       end
     end
   end
@@ -115,12 +119,11 @@ class Board
     rows.include?(row) && cols.include?(col)
   end
 
-  def add_edge(start_name, end_name, undirected = true)
-    from = @squares.index { |square| square.name == start_name }
-    to = @squares.index { |square| square.name == end_name }
-    @squares[from].neighbors_name[to] = true
-    return unless undirected
-
-    @squares[to].neighbors_name[from] = true
+  def add_edge(square, neighbor, key)
+    binding.pry if square.name == 'h8'
+    opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
+    square.neighbors[key] = neighbor
+    neighbor.neighbors[opposites[key].to_sym] = square
+    nil
   end
 end
