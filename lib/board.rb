@@ -37,7 +37,6 @@ class Board
 
   private
 
-  require 'pry-byebug'
   def generate_board
     combine_columns_and_rows.to_a.each { |square| @squares << Square.new(square) }
     assign_square_positions
@@ -45,6 +44,7 @@ class Board
       assign_neighbors(square)
       square.assign_color
     end
+    nil
   end
 
   def combine_columns_and_rows
@@ -120,10 +120,9 @@ class Board
   end
 
   def add_edge(square, neighbor, key)
-    binding.pry if square.name == 'h8'
     opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
-    square.neighbors[key] = neighbor
-    neighbor.neighbors[opposites[key].to_sym] = square
+    square.neighbors[key] = neighbor.name
+    neighbor.neighbors[opposites[key].to_sym] = square.name
     nil
   end
 end
