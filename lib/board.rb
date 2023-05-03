@@ -3,23 +3,13 @@ require_relative 'square'
 
 # Generate a graph called 'Board' of nodes called 'squares'
 class Board
-  attr_accessor :vertices
+  attr_accessor :squares
   attr_reader :columns, :rows
 
   def initialize(columns = 8, rows = 8)
     @columns = columns
     @rows = rows
     @squares = []
-    @nb = {
-      n: [1, 0],
-      ne: [1, 1],
-      e: [0, 1],
-      se: [-1, 1],
-      s: [-1, 0],
-      sw: [-1, -1],
-      w: [0, -1],
-      nw: [1, -1]
-    }
     generate_board
   end
 
@@ -48,9 +38,51 @@ class Board
   private
 
   def generate_board
-    combine_columns_and_rows.to_a.each { |square| add_square(square) }
+    combine_columns_and_rows.to_a.each { |square| @squares << Square.new(square) }
     assign_square_positions
     @squares.each { |square| assign_neighbors(square) }
+  end
+
+  def combine_columns_and_rows
+    array = []
+    cols = make_columns
+    rows = make_rows
+    cols.each do |col|
+      rows.each do |row|
+        array << "#{col}#{row}"
+      end
+    end
+    array
+  end
+
+  def assign_square_positions
+    position_array = generate_2d_array(@columns)
+    @squares.each_with_index do |square, index|
+      square.position = position_array[index]
+    end
+    nil
+  end
+
+  def assign_neighbors(square)
+    {
+      n: [1, 0],
+      ne: [1, 1],
+      e: [0, 1],
+      se: [-1, 1],
+      s: [-1, 0],
+      sw: [-1, -1],
+      w: [0, -1],
+      nw: [1, -1]
+    }.each do |k, v|
+      calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
+      if on_board?(calculated_position)
+        square.neighbors_positions[k] = calculated_position
+        neighbor = find_square_by_position(square.neighbors_positions[k])
+        add_edge(square.name, neighbor.name)
+      else
+        square.neighbors_positions[k] = nil
+      end
+    end
   end
 
   def make_columns
@@ -70,43 +102,9 @@ class Board
     array
   end
 
-  def combine_columns_and_rows
-    array = []
-    cols = make_columns
-    rows = make_rows
-    cols.each do |col|
-      rows.each do |row|
-        array << "#{col}#{row}"
-      end
-    end
-    array
-  end
-
   def generate_2d_array(columns)
     a = (0..columns - 1).to_a
-    b = (0..columns - 1).to_a
-    a.product(b)
-  end
-
-  def assign_square_positions
-    position_array = generate_2d_array(@columns)
-    @squares.each_with_index do |square, index|
-      square.position = position_array[index]
-    end
-    nil
-  end
-
-  def assign_neighbors(square)
-    @nb.each do |k, v|
-      calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
-      if on_board?(calculated_position)
-        square.neighbors_positions[k] = calculated_position
-        neighbor = find_square_by_position(square.neighbors_positions[k])
-        add_edge(square.name, neighbor.name)
-      else
-        square.neighbors_positions[k] = nil
-      end
-    end
+    a.product(a)
   end
 
   def on_board?(position)
@@ -115,10 +113,6 @@ class Board
     row = position[0]
     col = position[1]
     rows.include?(row) && cols.include?(col)
-  end
-
-  def add_square(name)
-    @squares << Square.new(name)
   end
 
   def add_edge(start_name, end_name, undirected = true)
