@@ -44,6 +44,7 @@ class Board
   # Display handled by @display
   def update_display
     @rows.times do |row|
+      # Send array of squares to @display for processing
       puts @display.build_row_string(build_row(row))
     end
   end
