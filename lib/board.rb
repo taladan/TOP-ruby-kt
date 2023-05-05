@@ -15,6 +15,7 @@ class Board
     generate_board
   end
 
+  # return square by name format columnrow - `a1`
   def find_square_by_name(name)
     @squares.each do |square|
       return square if square.name == name
@@ -22,12 +23,14 @@ class Board
     nil
   end
 
+  # return square object by positional space -  takes an array
   def find_square_by_position(position)
     @squares.each do |square|
       return square if square.position == position
     end
   end
 
+  # returns the name of the square in position [col, row]
   def get_name_by_position(position)
     square = find_square_by_position(position)
     square.name
@@ -48,16 +51,22 @@ class Board
 
   private
 
+  # create board of squares
   def generate_board
+    # make squares
     combine_columns_and_rows.to_a.each { |square| @squares << Square.new(square) }
+    # gives the squares positions in space
     assign_square_positions
+    # calculate neighbors and assign a color to square
     @squares.each do |square|
       assign_neighbors(square)
       square.assign_color
     end
+    # explicitly return nothing
     nil
   end
 
+  # return an array of formatted column and row names - ex `a1 - h8`
   def combine_columns_and_rows
     array = []
     cols = make_columns
@@ -70,6 +79,8 @@ class Board
     array
   end
 
+  # this will give squares positional information as an easier way to reference as a 2d array as well as name info
+  # allows for some math operations like assign_neighbors
   def assign_square_positions
     position_array = generate_2d_array(@columns)
     @squares.each_with_index do |square, index|
@@ -78,6 +89,7 @@ class Board
     nil
   end
 
+  # assign each neighboring square's name to square, or nil if the calculated position if off board
   def assign_neighbors(square)
     {
       n: [1, 0],
@@ -100,6 +112,7 @@ class Board
     end
   end
 
+  # return array of lettered columns from a - zz
   def make_columns
     alphas = ('a'..'zz').to_a
     array = []
@@ -109,6 +122,7 @@ class Board
     array
   end
 
+  # create an array of row numbers from 1
   def make_rows
     array = []
     @rows.times do |row|
@@ -130,6 +144,8 @@ class Board
     rows.include?(row) && cols.include?(col)
   end
 
+  # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
+  # This sets an unweighted, undirected edge between square and its `key` neighbor
   def add_edge(square, neighbor, key)
     opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
     square.neighbors[key] = neighbor.name
@@ -137,7 +153,6 @@ class Board
     nil
   end
 
-  #
   # recurse through all east neighbors, pack square and return when [:e].nil? == true
   def build_row(row, column = 0, output = [])
     square = find_square_by_position([column, row])
