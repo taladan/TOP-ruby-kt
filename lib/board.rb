@@ -42,9 +42,7 @@ class Board
 
   # Display handled by @display
   def update_display
-    # loop over # of rows
     @rows.times do |row|
-      # display row
       puts @display.build_row_string(build_row(row))
     end
   end

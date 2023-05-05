@@ -7,19 +7,20 @@ class Square
   attr_accessor :name,
                 :neighbors,
                 :position,
-                :contents
+                :contents,
+                :color
 
   def initialize(name)
     @name = name
     @neighbors = {
-      n: { square: nil },
-      ne: { square: nil },
-      e: { square: nil },
-      se: { square: nil },
-      s: { square: nil },
-      sw: { square: nil },
-      w: { square: nil },
-      nw: { square: nil }
+      n: nil,
+      ne: nil,
+      e: nil,
+      se: nil,
+      s: nil,
+      sw: nil,
+      w: nil,
+      nw: nil
     }
     @position = []
     @contents = nil
