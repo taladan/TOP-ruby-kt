@@ -1,15 +1,17 @@
 # board.rb
 require_relative 'square'
+require_relative 'display'
 
 # Generate a graph called 'Board' of nodes called 'squares'
 class Board
   attr_accessor :squares
-  attr_reader :columns, :rows
+  attr_reader :columns, :rows, :display
 
   def initialize(columns = 8, rows = 8)
     @columns = columns
     @rows = rows
     @squares = []
+    @display = Display.new
     generate_board
   end
 
@@ -33,6 +35,15 @@ class Board
 
   def count
     squares.length
+  end
+
+  # Display handled by @display
+  def update_display
+    # loop over # of rows
+    @rows.times do |row|
+      # display row
+      puts @display.build_row_string(build_row(row))
+    end
   end
 
   private
@@ -124,5 +135,15 @@ class Board
     square.neighbors[key] = neighbor.name
     neighbor.neighbors[opposites[key].to_sym] = square.name
     nil
+  end
+
+  #
+  # recurse through all east neighbors, pack square and return when [:e].nil? == true
+  def build_row(row, column = 0, output = [])
+    square = find_square_by_position([column, row])
+    return output << square if square.neighbors[:e].nil?
+
+    output << square
+    build_row(row + 1, column + 1, output)
   end
 end
