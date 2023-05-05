@@ -43,9 +43,10 @@ class Board
 
   # Display handled by @display
   def update_display
-    @rows.times do |row|
-      # Send array of squares to @display for processing
+    row = @rows - 1
+    while row > 0
       puts @display.build_row_string(build_row(row))
+      row -= 1
     end
   end
 
@@ -92,14 +93,14 @@ class Board
   # assign each neighboring square's name to square, or nil if the calculated position if off board
   def assign_neighbors(square)
     {
-      n: [1, 0],
+      n: [0, 1],
       ne: [1, 1],
-      e: [0, 1],
-      se: [-1, 1],
-      s: [-1, 0],
+      e: [1, 0],
+      se: [1, -1],
+      s: [0, -1],
       sw: [-1, -1],
-      w: [0, -1],
-      nw: [1, -1]
+      w: [-1, 0],
+      nw: [-1, 1]
     }.each do |k, v|
       calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
       if on_board?(calculated_position)
@@ -138,8 +139,8 @@ class Board
   def on_board?(position)
     rows = (0..@rows - 1).to_a
     cols = (0..@columns - 1).to_a
-    row = position[0]
-    col = position[1]
+    row = position[1]
+    col = position[0]
     rows.include?(row) && cols.include?(col)
   end
 
@@ -152,12 +153,15 @@ class Board
     nil
   end
 
+  # TODO: Fix neighbor assignment.  Currently not assigning neighbors correctly (saying a2 is the east neighbor to a1 when it should be b1)
+  require 'pry-byebug'
   # recurse through all east neighbors, pack square and return when [:e].nil? == true
   def build_row(row, column = 0, output = [])
     square = find_square_by_position([column, row])
+    # binding.pry
     return output << square if square.neighbors[:e].nil?
 
     output << square
-    build_row(row + 1, column + 1, output)
+    build_row(row, column + 1, output)
   end
 end
