@@ -103,7 +103,6 @@ class Board
     }.each do |k, v|
       calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
       if on_board?(calculated_position)
-        # square.neighbor[k] = calculated_position
         neighbor = find_square_by_position(calculated_position)
         add_edge(square, neighbor, k)
       else
