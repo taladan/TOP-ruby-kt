@@ -36,6 +36,7 @@ class Board
     square.name
   end
 
+  # return total number of squares in board
   def count
     squares.length
   end
