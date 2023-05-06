@@ -76,13 +76,23 @@ class Board
       puts @display.build_row_string(build_row(row))
       row -= 1
     end
+    column_labels = make_columns
+    linebreak
+    printf('     ')
+    column_labels.each do |label|
+      printf('%-6s', label)
+    end
+    linebreak
   end
 
   private
 
-  # create board of squares return nil
+  # insert newline
+  def linebreak
+    puts ' '
+  end
 
-  require 'pry-byebug'
+  # create board of squares return nil
   def generate_board
     # make squares
     @valid_squares = combine_columns_and_rows.to_a
