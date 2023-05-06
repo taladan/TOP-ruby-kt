@@ -12,16 +12,7 @@ class Square
 
   def initialize(name)
     @name = name
-    @neighbors = {
-      n: nil,
-      ne: nil,
-      e: nil,
-      se: nil,
-      s: nil,
-      sw: nil,
-      w: nil,
-      nw: nil
-    }
+    @neighbors = { n: nil, ne: nil, e: nil, se: nil, s: nil, sw: nil, w: nil, nw: nil }
     @position = []
     @contents = nil
     @color = nil
