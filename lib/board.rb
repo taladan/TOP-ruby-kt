@@ -12,7 +12,19 @@ class Board
     @rows = rows
     @squares = []
     @display = Display.new
+    @valid_squares = nil
     generate_board
+  end
+
+  # add piece to board.  Piece must be in three letter format: 'WKi', 'BQu', 'WPa', 'BBi', etc
+  # The first letter indicates the color of the piece, the last two letters indicate the piece
+  # Also take a named position to add piece to ('a1-h8')
+  def add_piece(piece, position)
+    raise 'Invalid Position' unless @valid_squares.include?(position)
+
+    square = find_square_by_name(position)
+    square.contents = piece
+    nil
   end
 
   # return square by name format columnrow - `a1`
@@ -55,7 +67,8 @@ class Board
   # create board of squares
   def generate_board
     # make squares
-    combine_columns_and_rows.to_a.each { |square| @squares << Square.new(square) }
+    @valid_squares = combine_columns_and_rows.to_a
+    @valid_squares.each { |square| @squares << Square.new(square) }
     # gives the squares positions in space
     assign_square_positions
     # calculate neighbors and assign a color to square
