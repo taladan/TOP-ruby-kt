@@ -20,7 +20,11 @@ class Display
       row.each do |square|
         pixels[:top] << set_color(string, square.color) if pixel == :top
         if pixel == :middle && !square.contents.nil?
-          pixels[:middle] << set_color("  #{square.contents&.blue} ", square.color)
+          pixels[:middle] << if square.contents.start_with?('B')
+                               set_color("  #{square.contents&.red} ", square.color)
+                             else
+                               set_color("  #{square.contents&.blue} ", square.color)
+                             end
         elsif pixel == :middle && square.contents.nil?
           pixels[:middle] << set_color(string, square.color)
         end
