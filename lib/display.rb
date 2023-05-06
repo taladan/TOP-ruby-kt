@@ -14,30 +14,24 @@ class Display
   # every square is treated as having a top, middle, and bottom pixel.  Contents of
   # each square will be displayed only in the middle pixel of the square.
   def build_row_string(row)
-    pixels = { top: '', middle: '', bottom: '' }
-    string = '      '
-    pixels.each do |pixel, _v|
-      row.each do |square|
-        pixels[:top] << set_color(string, square.color) if pixel == :top
-        if pixel == :middle && !square.contents.nil?
-          pixels[:middle] << set_color("  #{square.contents}   ", square.color)
-        elsif pixel == :middle && square.contents.nil?
-          # uncomment to display square names in center of each square
-          # pixels[:middle] << set_color("  #{square.name}  ".blue, square.color)
-          pixels[:middle] << set_color(string, square.color)
-        end
-        pixels[:bottom] << set_color(string, square.color) if pixel == :bottom
-      end
+    output = { top: '', middle: '', bottom: '' }
+    row.each do |square|
+      output[:top] << square.pixels[:top]
+      output[:middle] << square.pixels[:middle]
+      output[:bottom] << square.pixels[:bottom]
     end
-
-    # Add spacing row numbers to head of row
-    pixels[:top].insert(0, '   ')
-    pixels[:middle].insert(0, " #{row[0].position[1] + 1} ")
-    pixels[:bottom].insert(0, '   ')
-    [pixels[:top], pixels[:middle], pixels[:bottom]].join("\n")
+    output = add_row_header(row, output)
+    [output[:top], output[:middle], output[:bottom]].join("\n")
   end
 
   private
+
+  def add_row_header(row, output)
+    output[:top].insert(0, '   ')
+    output[:middle].insert(0, " #{row[0].position[1] + 1} ")
+    output[:bottom].insert(0, '   ')
+    output
+  end
 
   def set_color(string, color)
     if color == 'black'
