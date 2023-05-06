@@ -36,7 +36,7 @@ class Square
   end
 
   def head_of_row?
-    position[1] == 0
+    position[1].zero?
   end
 
   def pixels
