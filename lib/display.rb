@@ -26,6 +26,7 @@ class Display
 
   private
 
+  # Add row number to head of row in middle pixel
   def add_row_header(row, output)
     output[:top].insert(0, '   ')
     output[:middle].insert(0, " #{row[0].position[1] + 1} ")
@@ -33,6 +34,7 @@ class Display
     output
   end
 
+  # set color of string to background of square
   def set_color(string, color)
     if color == 'black'
       string.on_black
