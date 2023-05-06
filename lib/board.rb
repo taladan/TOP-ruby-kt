@@ -81,6 +81,8 @@ class Board
   private
 
   # create board of squares return nil
+
+  require 'pry-byebug'
   def generate_board
     # make squares
     @valid_squares = combine_columns_and_rows.to_a
@@ -110,7 +112,6 @@ class Board
 
   # this will give squares positional information as an easier way to reference as a 2d array as well as name info
   # allows for some math operations like assign_neighbors
-
   def assign_square_positions
     @squares.each_with_index do |square, index|
       square.position = generate_2d_array[index]
@@ -119,18 +120,8 @@ class Board
   end
 
   # assign each neighboring square's name to square, or nil if the calculated position if off board
-
   def assign_neighbors(square)
-    {
-      n: [0, 1],
-      ne: [1, 1],
-      e: [1, 0],
-      se: [1, -1],
-      s: [0, -1],
-      sw: [-1, -1],
-      w: [-1, 0],
-      nw: [-1, 1]
-    }.each do |k, v|
+    { n: [0, 1], ne: [1, 1], e: [1, 0], se: [1, -1], s: [0, -1], sw: [-1, -1], w: [-1, 0], nw: [-1, 1] }.each do |k, v|
       calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
       if on_board?(calculated_position)
         neighbor = find_square_by_position(calculated_position)
@@ -176,6 +167,7 @@ class Board
 
   # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
   # This sets an unweighted, undirected edge between square and its `key` neighbor
+
   def add_edge(square, neighbor, key)
     opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
     square.neighbors[key] = neighbor.name
