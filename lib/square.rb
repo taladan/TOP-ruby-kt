@@ -34,4 +34,8 @@ class Square
       @color = 'white'
     end
   end
+
+  def head_of_row?
+    position[1] == 0
+  end
 end
