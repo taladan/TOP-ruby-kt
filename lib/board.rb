@@ -80,7 +80,7 @@ class Board
 
   private
 
-  # create board of squares
+  # create board of squares return nil
   def generate_board
     # make squares
     @valid_squares = combine_columns_and_rows.to_a
@@ -92,7 +92,6 @@ class Board
       assign_neighbors(square)
       square.assign_color
     end
-    # explicitly return nothing
     nil
   end
 
