@@ -153,12 +153,9 @@ class Board
     nil
   end
 
-  # TODO: Fix neighbor assignment.  Currently not assigning neighbors correctly (saying a2 is the east neighbor to a1 when it should be b1)
-  require 'pry-byebug'
   # recurse through all east neighbors, pack square and return when [:e].nil? == true
   def build_row(row, column = 0, output = [])
     square = find_square_by_position([column, row])
-    # binding.pry
     return output << square if square.neighbors[:e].nil?
 
     output << square
