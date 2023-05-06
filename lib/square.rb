@@ -25,11 +25,7 @@ class Square
     @position = []
     @contents = nil
     @color = nil
-    # TODO: Add color values to squares
-    # TODO: ensure piece names are always 3 in length: [WKi, WQu, BKi, BQu]
   end
-
-  def add_edge; end
 
   def assign_color
     if (@position[0].even? && @position[1].even?) || (@position[0].odd? && @position[1].odd?)
