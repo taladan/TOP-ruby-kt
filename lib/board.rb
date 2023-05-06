@@ -72,7 +72,7 @@ class Board
   # Display handled by @display
   def update_display
     row = @rows - 1
-    while row > 0
+    while row >= 0
       puts @display.build_row_string(build_row(row))
       row -= 1
     end
@@ -110,15 +110,16 @@ class Board
 
   # this will give squares positional information as an easier way to reference as a 2d array as well as name info
   # allows for some math operations like assign_neighbors
+
   def assign_square_positions
-    position_array = generate_2d_array(@columns)
     @squares.each_with_index do |square, index|
-      square.position = position_array[index]
+      square.position = generate_2d_array[index]
     end
     nil
   end
 
   # assign each neighboring square's name to square, or nil if the calculated position if off board
+
   def assign_neighbors(square)
     {
       n: [0, 1],
@@ -159,9 +160,10 @@ class Board
     array
   end
 
-  def generate_2d_array(columns)
-    a = (0..columns - 1).to_a
-    a.product(a)
+  def generate_2d_array
+    output = []
+    (@columns * @rows).times { |num| output << [num % @columns, num / @rows] }
+    output
   end
 
   def on_board?(position)
