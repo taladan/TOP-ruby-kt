@@ -1,6 +1,7 @@
 # display.rb
 require 'colorize'
 
+# Handle building display for chessboard
 class Display
   def initialize
     @view = {
