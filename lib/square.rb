@@ -26,6 +26,10 @@ class Square
     end
   end
 
+  def occupied?
+    !@contents.nil?
+  end
+
   def head_of_row?
     position[1].zero?
   end
