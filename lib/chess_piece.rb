@@ -13,14 +13,4 @@ class ChessPiece
     @available_moves = nil
     calculate_available_moves
   end
-
-  def boundary?(square)
-    # Square occupied
-    return true if square.occupied?
-    # Square is out of bounds
-    return true if square.position[0] < 0 || square.position[1] < 0 || square.position[0] > 7 || square.position[1] > 7
-
-    # Square is empty, proceed
-    false
-  end
 end
