@@ -1,9 +1,13 @@
 # board.rb
 require_relative 'square'
 require_relative 'display'
+require_relative 'piece_handler'
+require_relative 'square_handler'
 
 # Generate a graph called 'Board' of nodes called 'squares'
 class Board
+  include Pieces
+  include Squares
   attr_accessor :squares
   attr_reader :columns, :rows, :display
 
@@ -16,58 +20,31 @@ class Board
     generate_board
   end
 
-  # add piece to board.  Piece must be in three letter format: 'WKi', 'BQu', 'WPa', 'BBi', etc
-  # The first letter indicates the color of the piece, the last two letters indicate the piece
-  # Also take a named position to add piece to ('a1-h8')
-  def add_piece(piece, position)
-    raise ArgumentError, 'Invalid Position' unless @valid_squares.include?(position)
+  # # return square by name format columnrow - `a1`
+  # def find_square_by_name(name)
+  #   @squares.each do |square|
+  #     return square if square.name == name
+  #   end
+  #   nil
+  # end
 
-    square = find_square_by_name(position)
-    square.contents = piece
-    nil
-  end
+  # # return square object by positional space -  takes an array
+  # def find_square_by_position(position)
+  #   @squares.each do |square|
+  #     return square if square.position == position
+  #   end
+  # end
 
-  # move a piece from a named square to a named square ('a1-h8')
-  def move_piece(from_square, to_square)
-    raise 'Invalid Starting Position' unless @valid_squares.include?(from_square)
-    raise 'Invalid Ending Position' unless @valid_squares.include?(to_square)
+  # # returns the name of the square in position [col, row]
+  # def get_name_by_position(position)
+  #   square = find_square_by_position(position)
+  #   square.name
+  # end
 
-    # load squares
-    from = find_square_by_name(from_square)
-    to = find_square_by_name(to_square)
-
-    raise 'Empty Square' if from.contents.nil?
-
-    # swap squares contents
-    to.contents = from.contents
-    from.contents = nil
-  end
-
-  # return square by name format columnrow - `a1`
-  def find_square_by_name(name)
-    @squares.each do |square|
-      return square if square.name == name
-    end
-    nil
-  end
-
-  # return square object by positional space -  takes an array
-  def find_square_by_position(position)
-    @squares.each do |square|
-      return square if square.position == position
-    end
-  end
-
-  # returns the name of the square in position [col, row]
-  def get_name_by_position(position)
-    square = find_square_by_position(position)
-    square.name
-  end
-
-  # return total number of squares in board
-  def count
-    squares.length
-  end
+  # # return total number of squares in board
+  # def count
+  #   squares.length
+  # end
 
   # Display handled by @display
   def update_display
@@ -87,10 +64,10 @@ class Board
 
   private
 
-  # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
-  def add_current_and_possible_squares(current, possible)
-    [current, possible].transpose.map { |x| x.reduce(:+) }
-  end
+  # # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
+  # def add_current_and_possible_squares(current, possible)
+  #   [current, possible].transpose.map { |x| x.reduce(:+) }
+  # end
 
   # insert newline
   def linebreak
@@ -138,27 +115,28 @@ class Board
     array
   end
 
-  # this will give squares positional information as an easier way to reference as a 2d array as well as name info
-  # allows for some math operations like assign_neighbors
-  def assign_square_positions
-    @squares.each_with_index do |square, index|
-      square.position = generate_2d_array[index]
-    end
-    nil
-  end
+  # # this will give squares positional information as an easier way to reference as a 2d array as well as name info
+  # # allows for some math operations like assign_neighbors
+  # def assign_square_positions
+  #   @squares.each_with_index do |square, index|
+  #     square.position = generate_2d_array[index]
+  #   end
+  #   nil
+  # end
 
-  # assign each neighboring square's name to square, or nil if the calculated position if off board
-  def assign_neighbors(square)
-    { n: [0, 1], ne: [1, 1], e: [1, 0], se: [1, -1], s: [0, -1], sw: [-1, -1], w: [-1, 0], nw: [-1, 1] }.each do |k, v|
-      calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
-      if on_board?(calculated_position)
-        neighbor = find_square_by_position(calculated_position)
-        add_edge(square, neighbor, k)
-      else
-        square.neighbors[k] = nil
-      end
-    end
-  end
+  # # assign each neighboring square's name to square, or nil if the calculated position if off board
+  # def assign_neighbors(square)
+  #   { n: [0, 1], ne: [1, 1], e: [1, 0], se: [1, -1], s: [0, -1], sw: [-1, -1], w: [-1, 0],
+  #     nw: [-1, 1] }.each do |k, v|
+  #     calculated_position = [square.position[0] + v[0], square.position[1] + v[1]]
+  #     if on_board?(calculated_position)
+  #       neighbor = find_square_by_position(calculated_position)
+  #       add_edge(square, neighbor, k)
+  #     else
+  #       square.neighbors[k] = nil
+  #     end
+  #   end
+  # end
 
   # return array of lettered columns from a - zz
   def make_columns
@@ -181,7 +159,7 @@ class Board
 
   def generate_2d_array
     output = []
-    (@columns * @rows).times { |num| output << [num % @columns, num / @rows] }
+    (@columns * @rows).times { |num| output << [num / @columns, num % @rows] }
     output
   end
 
@@ -193,15 +171,14 @@ class Board
     rows.include?(row) && cols.include?(col)
   end
 
-  # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
-  # This sets an unweighted, undirected edge between square and its `key` neighbor
-
-  def add_edge(square, neighbor, key)
-    opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
-    square.neighbors[key] = neighbor.name
-    neighbor.neighbors[opposites[key].to_sym] = square.name
-    nil
-  end
+  # # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
+  # # This sets an unweighted, undirected edge between square and its `key` neighbor
+  # def add_edge(square, neighbor, key)
+  #   opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
+  #   square.neighbors[key] = neighbor.name
+  #   neighbor.neighbors[opposites[key].to_sym] = square.name
+  #   nil
+  # end
 
   # recurse through all east neighbors, pack square and return when [:e].nil? == true
   def build_row(row, column = 0, output = [])
