@@ -107,6 +107,19 @@ class Board
     nil
   end
 
+  # is the queried square a boundary square?
+  def boundary?(square)
+    # Square occupied
+    return true if square.occupied?
+    # Square is out of bounds
+    if square.position[0].zero? || square.position[1].zero? || square.position[0] == 7 || square.position[1] == 7
+      return true
+    end
+
+    # Square is empty, proceed
+    false
+  end
+
   # return an array of formatted column and row names - ex `a1 - h8`
   def combine_columns_and_rows
     array = []
