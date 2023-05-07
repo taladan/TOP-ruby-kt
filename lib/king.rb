@@ -3,9 +3,9 @@ require_relative 'chess_piece'
 
 # King chess piece
 class King < ChessPiece
-  # King can move any single square in a straight line from current square
-  def calculate_available_moves
-    @available_moves = [
+  def initialize
+    super()
+    @possible_moves = [
       [1, 1],
       [-1, -1],
       [-1, 1],
@@ -16,4 +16,6 @@ class King < ChessPiece
       [-1, 0]
     ]
   end
+
+  # King can move any single square in a straight line from current square
 end

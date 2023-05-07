@@ -2,7 +2,7 @@
 
 # Parent class for all chess pieces
 class ChessPiece
-  attr_accessor :color, :current_square
+  attr_accessor :color, :current_square, :possible_moves
 
   def initialize(name, color, current_square)
     raise ArgumentError, 'Invalid Name' unless %w[K Q B N R P].include?(name)
@@ -10,7 +10,6 @@ class ChessPiece
     @color = color
     @name = name
     @current_square = current_square
-    @available_moves = nil
-    calculate_available_moves
+    @possible_moves = nil
   end
 end

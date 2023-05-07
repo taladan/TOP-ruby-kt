@@ -3,9 +3,9 @@ require_relative 'chess_piece'
 
 # Knight chess piece
 class Knight < ChessPiece
-  # Knight can move any combination of 2,1 squares
-  def calculate_available_moves
-    @available_moves[
+  def initialize
+    super()
+    @possible_moves = [
       [1, 2],
       [-1, 2],
       [1, -2],
@@ -16,4 +16,7 @@ class Knight < ChessPiece
       [-2, -1]
     ]
   end
+
+  # Knight can move any combination of 2,1 squares
+  def calculate_available_moves; end
 end
