@@ -3,8 +3,8 @@ require_relative 'chess_piece'
 
 # Rook chess piece
 class Rook < ChessPiece
-  def initialize(color)
-    super()
-    @color = color
+  # Rook can move any number of squares in a straight line, left/right/up/down, no diagonals
+  def calculate_available_moves
+    @available_moves
   end
 end
