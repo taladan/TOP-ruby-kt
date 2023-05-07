@@ -20,7 +20,7 @@ class Board
   # The first letter indicates the color of the piece, the last two letters indicate the piece
   # Also take a named position to add piece to ('a1-h8')
   def add_piece(piece, position)
-    raise 'Invalid Position' unless @valid_squares.include?(position)
+    raise ArgumentError, 'Invalid Position' unless @valid_squares.include?(position)
 
     square = find_square_by_name(position)
     square.contents = piece
