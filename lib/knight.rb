@@ -3,7 +3,7 @@
 # Knight chess piece
 module Knight
   # Knight can move any combination of 2,1 squares
-  @possible_moves = [
+  POSSIBLE_MOVES = [
     [1, 2],
     [-1, 2],
     [1, -2],

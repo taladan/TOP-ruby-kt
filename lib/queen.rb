@@ -2,5 +2,5 @@
 
 # Queen Chess Piece
 module Queen
-  @possible_moves = nil
+  POSSIBLE_MOVES = nil
 end
