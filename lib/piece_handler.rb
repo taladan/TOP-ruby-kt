@@ -1,6 +1,7 @@
 # piece_handling.rb
 # Module file containing piece logic
 
+# Handle piece logic
 module Pieces
   @@valid_piece_names = %w[WK BK WQ BQ WB BB WN BN WR BR WP BP]
   # add piece to board.  Piece must be in two letter format: 'WK', 'BQ', 'WP', 'BB', etc
