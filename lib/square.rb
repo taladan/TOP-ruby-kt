@@ -4,13 +4,12 @@ require_relative 'display'
 
 # Creates a graph node named 'square'
 class Square
+  attr_reader :x, :y
   attr_accessor :name,
                 :neighbors,
                 :position,
                 :contents,
-                :color,
-                :x,
-                :y
+                :color
 
   def initialize(name)
     @name = name
