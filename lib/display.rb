@@ -30,8 +30,6 @@ module Display
     linebreak
   end
 
-  def write_to_screen(string); end
-
   private
 
   # insert newline
