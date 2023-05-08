@@ -24,11 +24,15 @@ module Squares
 
   # returns the name of the square in position [col, row]
   def get_name_by_position(position)
+    return nil if position.nil?
+
     square = find_square_by_position(position)
     square.name
   end
 
   def get_position_by_name(name)
+    return nil if name.nil?
+
     square = find_square_by_name(name)
     square.position
   end
@@ -61,8 +65,10 @@ module Squares
   # this will give squares positional information as an easier way to reference as a 2d array as well as name info
   # allows for some math operations like assign_neighbors
   def assign_square_positions
+    arr2d = generate_2d_array
     @squares.each_with_index do |square, index|
-      square.position = generate_2d_array[index]
+      square.set_positions(arr2d[index])
+      # square.set_positions
     end
     nil
   end

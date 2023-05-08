@@ -8,7 +8,9 @@ class Square
                 :neighbors,
                 :position,
                 :contents,
-                :color
+                :color,
+                :x,
+                :y
 
   def initialize(name)
     @name = name
@@ -16,6 +18,8 @@ class Square
     @position = []
     @contents = nil
     @color = nil
+    @x = nil
+    @y = nil
   end
 
   # Assign square color based on position within board.  Upper left & Lower right squares == whitejj
@@ -50,5 +54,11 @@ class Square
     mid = pad.on_white if @color == 'white' && @contents.nil?
 
     { top: pad, middle: mid, bottom: pad }
+  end
+
+  def set_positions(arr)
+    @position = arr
+    @x = @position[0]
+    @y = @position[1]
   end
 end
