@@ -24,5 +24,13 @@ class ChessPiece
     @name = name
     @current_square = current_square
     @possible_moves = nil
+    colorize_name
+  end
+
+  private
+
+  def colorize_name
+    @name = @name.red if @color == 'white'
+    @name = @name.blue if @color == 'black'
   end
 end
