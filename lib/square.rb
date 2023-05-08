@@ -37,8 +37,8 @@ class Square
   def pixels
     pad = '      '.on_black if @color == 'black'
     pad = '      '.on_white if @color == 'white'
-    mid = "  #{contents}   ".on_black if @color == 'black' && !@contents.nil?
-    mid = "  #{contents}   ".on_white if @color == 'white' && !@contents.nil?
+    mid = "  #{@contents.name}   ".on_black if @color == 'black' && !@contents.nil?
+    mid = "  #{@contents.name}   ".on_white if @color == 'white' && !@contents.nil?
     # uncomment for square names in center of each square
     # mid = "  #{name}  ".on_black if @color == 'black' && @contents.nil?
     # mid = "  #{name}  ".on_white if @color == 'white' && @contents.nil?

@@ -2,20 +2,24 @@
 # Module file containing piece logic
 
 module Pieces
-  # add piece to board.  Piece must be in three letter format: 'WKi', 'BQu', 'WPa', 'BBi', etc
+  @@valid_piece_names = %w[WK BK WQ BQ WB BB WN BN WR BR WP BP]
+  # add piece to board.  Piece must be in two letter format: 'WK', 'BQ', 'WP', 'BB', etc
   # The first letter indicates the color of the piece, the last two letters indicate the piece
   # Also take a named position to add piece to ('a1-h8')
-  @valid_piece_names = %w[WK BK WQ BQ WB BB WN BN WR BR WP BP]
-  def add_piece(piece, position)
-    raise ArgumentError, 'Invalid Position' unless @valid_squares.include?(position)
 
-    unless @valid_piece_names.include?(piece)
+  def add_piece(piece, position)
+    raise ArgumentError, 'Invalid Position' unless @valid_squares.include?(position.downcase)
+
+    unless @@valid_piece_names.include?(piece.upcase)
       raise ArgumentError,
             "Invalid Piece name: Must be one of: #{@valid_piece_names}"
     end
+    color = 'white' if piece[0].upcase == 'W'
+    color = 'black' if piece[0].upcase == 'B'
+    name = piece[1].upcase
 
-    square = find_square_by_name(position)
-    square.contents = piece
+    square = find_square_by_name(position.downcase)
+    square.contents = ChessPiece.new(name, color, square)
     nil
   end
 

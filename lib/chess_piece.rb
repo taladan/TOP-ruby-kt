@@ -1,8 +1,21 @@
 # chess_piece.rb
+require_relative 'king'
+require_relative 'queen'
+require_relative 'bishop'
+require_relative 'knight'
+require_relative 'rook'
+require_relative 'pawn'
 
 # Parent class for all chess pieces
 class ChessPiece
-  attr_accessor :color, :current_square, :possible_moves
+  include King
+  include Queen
+  include Bishop
+  include Knight
+  include Rook
+  include Pawn
+  attr_accessor :current_square
+  attr_reader :name, :color, :possible_moves
 
   def initialize(name, color, current_square)
     raise ArgumentError, 'Invalid Name' unless %w[K Q B N R P].include?(name)
