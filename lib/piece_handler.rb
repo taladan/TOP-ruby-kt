@@ -58,6 +58,12 @@ module Pieces
     [current, possible].transpose.map { |x| x.reduce(:+) }
   end
 
+  # Takes an array of squares and gets their 2d array positions
+  def get_square_positions(array_of_squares)
+    output = []
+    array_of_squares.each { |square| output << square.position }
+    output
+  end
   # Validate 2d array position either empty, occupied by teammate, occupied by enemy
   # Return nil if off board or occupied by team mate (invalid position to move to)
   # Return target square if on board and empty or on board and contains enemy piece
