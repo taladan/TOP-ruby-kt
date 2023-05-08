@@ -28,6 +28,11 @@ module Squares
     square.name
   end
 
+  def get_position_by_name(name)
+    square = find_square_by_name(name)
+    square.position
+  end
+
   private
 
   # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
