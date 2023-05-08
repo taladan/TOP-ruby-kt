@@ -23,7 +23,7 @@ class ChessPiece
     @color = color
     @name = name
     @current_square = current_square
-    @possible_moves = nil
+    @possible_moves = get_possible_moves
     colorize_name
   end
 
@@ -33,5 +33,23 @@ class ChessPiece
   def colorize_name
     @name = @name.red if @color == 'white'
     @name = @name.blue if @color == 'black'
+  end
+
+  # Apply correct possible moves
+  def get_possible_moves
+    case @name
+    when 'K'
+      @possible_moves = King::POSSIBLE_MOVES
+    when 'Q'
+      @possible_moves = Queen::POSSIBLE_MOVES
+    when 'B'
+      @possible_moves = Bishop::POSSIBLE_MOVES
+    when 'N'
+      @possible_moves = Knight::POSSIBLE_MOVES
+    when 'R'
+      @possible_moves = Rook::POSSIBLE_MOVES
+    when 'P'
+      @possible_moves = Pawn::POSSIBLE_MOVES
+    end
   end
 end
