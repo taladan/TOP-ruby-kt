@@ -2,6 +2,11 @@
 # Square Logic module
 
 module Squares
+  # return total number of squares in board
+  def count
+    squares.length
+  end
+
   # return square by name format columnrow - `a1`
   def find_square_by_name(name)
     @squares.each do |square|
@@ -23,33 +28,20 @@ module Squares
     square.name
   end
 
-  # return total number of squares in board
-  def count
-    squares.length
-  end
-
   private
 
-  # recurse through all east neighbors, pack square and return when [:e].nil? == true
-  def build_row(row, column = 0, output = [])
-    square = find_square_by_position([column, row])
-    return output << square if square.neighbors[:e].nil?
-
-    output << square
-    build_row(row, column + 1, output)
-  end
-
+  #
   # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
   def add_current_and_possible_squares(current, possible)
     [current, possible].transpose.map { |x| x.reduce(:+) }
   end
 
-  # this will give squares positional information as an easier way to reference as a 2d array as well as name info
-  # allows for some math operations like assign_neighbors
-  def assign_square_positions
-    @squares.each_with_index do |square, index|
-      square.position = generate_2d_array[index]
-    end
+  # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
+  # This sets an unweighted, undirected edge between square and its `key` neighbor
+  def add_edge(square, neighbor, key)
+    opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
+    square.neighbors[key] = neighbor.name
+    neighbor.neighbors[opposites[key].to_sym] = square.name
     nil
   end
 
@@ -67,12 +59,21 @@ module Squares
     end
   end
 
-  # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
-  # This sets an unweighted, undirected edge between square and its `key` neighbor
-  def add_edge(square, neighbor, key)
-    opposites = { n: 's', ne: 'sw', e: 'w', se: 'nw', s: 'n', sw: 'ne', w: 'e', nw: 'se' }
-    square.neighbors[key] = neighbor.name
-    neighbor.neighbors[opposites[key].to_sym] = square.name
+  # this will give squares positional information as an easier way to reference as a 2d array as well as name info
+  # allows for some math operations like assign_neighbors
+  def assign_square_positions
+    @squares.each_with_index do |square, index|
+      square.position = generate_2d_array[index]
+    end
     nil
+  end
+
+  # recurse through all east neighbors, pack square and return when [:e].nil? == true
+  def build_row(row, column = 0, output = [])
+    square = find_square_by_position([column, row])
+    return output << square if square.neighbors[:e].nil?
+
+    output << square
+    build_row(row, column + 1, output)
   end
 end
