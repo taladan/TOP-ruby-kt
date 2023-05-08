@@ -33,16 +33,16 @@ module Display
   private
 
   # insert newline
-  def linebreak
-    puts ' '
-  end
-
   # Add row number to head of row in middle pixel
   def add_row_header(row, output)
     output[:top].insert(0, '   ')
     output[:middle].insert(0, " #{row[0].position[1] + 1} ")
     output[:bottom].insert(0, '   ')
     output
+  end
+
+  def linebreak
+    puts ' '
   end
 
   # set color of string to background of square
