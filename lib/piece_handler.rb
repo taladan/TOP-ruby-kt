@@ -24,6 +24,18 @@ module Pieces
     nil
   end
 
+  # Return an array of valid and open squares to move to
+  def calcluate_possible_squares(from_square)
+    possible_moves = []
+    # square = find_square_by_name(from_square)
+    piece = find_square_by_name(from_square).contents
+    current = piece.current_square.position
+    piece.possible_moves.each do |move|
+      possible_moves << validate_position(add_current_and_possible_squares(current, move), piece.color)
+    end
+    possible_moves.compact
+  end
+
   # move a piece from a named square to a named square ('a1-h8')
   def move_piece(from_square, to_square)
     raise ArgumentError, 'Invalid Starting Position' unless @valid_squares.include?(from_square)
