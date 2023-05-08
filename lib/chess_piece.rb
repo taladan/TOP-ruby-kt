@@ -29,6 +29,7 @@ class ChessPiece
 
   private
 
+  # Apply color to piece
   def colorize_name
     @name = @name.red if @color == 'white'
     @name = @name.blue if @color == 'black'
