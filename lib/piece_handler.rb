@@ -45,4 +45,21 @@ module Pieces
   def add_current_and_possible_squares(current, possible)
     [current, possible].transpose.map { |x| x.reduce(:+) }
   end
+
+  # Validate 2d array position either empty, occupied by teammate, occupied by enemy
+  # Return nil if off board or occupied by team mate (invalid position to move to)
+  # Return target square if on board and empty or on board and contains enemy piece
+  def validate_position(target_position, color)
+    return nil unless on_board?(target_position)
+
+    target_square = find_square_by_position(target_position)
+    # Empty square
+    return target_square unless target_square.occupied?
+
+    # occupied by enemy
+    return target_square if target_square.occupied? && target_square.contents.color != color
+
+    # occupied by teammate
+    return nil if target_square.occupied? && target_square.contents.color == color
+  end
 end
