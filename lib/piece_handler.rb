@@ -25,34 +25,45 @@ module Pieces
   end
 
   # Return an array of valid and open squares to move to
-  def calcluate_possible_squares(from_square)
+  def calculate_possible_squares(from_square)
     possible_moves = []
-    # square = find_square_by_name(from_square)
+    # load piece
     piece = find_square_by_name(from_square).contents
+    # read current position from piece
     current = piece.current_square.position
+
+    # loop through possible moves and build array
     piece.possible_moves.each do |move|
       possible_moves << validate_position(add_current_and_possible_squares(current, move), piece.color)
     end
     possible_moves.compact
   end
 
+  require 'pry-byebug'
   # move a piece from a named square to a named square ('a1-h8')
-  def move_piece(from_square, to_square)
+  def move_piece(from_square, to_square, override: false)
     raise ArgumentError, 'Invalid Starting Position' unless @valid_squares.include?(from_square)
     raise ArgumentError, 'Invalid Ending Position' unless @valid_squares.include?(to_square)
 
-    # load squares
-    from = find_square_by_name(from_square)
-    to = find_square_by_name(to_square)
+    # If override is false, we stick with the piece's movement patterns.
+    # If override is true, we ignore piece's movement patterns and just
+    # place piece where we desire.
+    if override == false
+      valid_moves = get_square_positions(calculate_possible_squares(from_square))
+      # binding.pry
+      unless valid_moves.include?(find_square_by_name(to_square).position)
+        raise ArgumentError,
+              'Square is not a valid target'
+      end
 
-    raise ArgumentError, 'No piece detected in starting Square' if from.contents.nil?
-
-    # swap squares contents
-    to.contents = from.contents
-    from.contents = nil
+      put_piece(from_square, to_square)
+    else
+      put_piece(from_square, to_square)
+    end
   end
-  
+
   private
+
   # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
   def add_current_and_possible_squares(current, possible)
     [current, possible].transpose.map { |x| x.reduce(:+) }
@@ -64,6 +75,19 @@ module Pieces
     array_of_squares.each { |square| output << square.position }
     output
   end
+
+  def put_piece(from_square, to_square)
+    # load squares
+    from = find_square_by_name(from_square)
+    to = find_square_by_name(to_square)
+
+    raise ArgumentError, 'No piece detected in starting Square' if from.contents.nil?
+
+    # swap squares contents
+    to.contents = from.contents
+    from.contents = nil
+  end
+
   # Validate 2d array position either empty, occupied by teammate, occupied by enemy
   # Return nil if off board or occupied by team mate (invalid position to move to)
   # Return target square if on board and empty or on board and contains enemy piece
