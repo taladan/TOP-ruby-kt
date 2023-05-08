@@ -27,14 +27,14 @@ class Square
     end
   end
 
-  # Return true/false if square occupied
-  def occupied?
-    !@contents.nil?
-  end
-
   # Return true/false if square at beginning of row
   def head_of_row?
     position[1].zero?
+  end
+
+  # Return true/false if square occupied
+  def occupied?
+    !@contents.nil?
   end
 
   # Build square display
