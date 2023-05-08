@@ -2,5 +2,5 @@
 
 # Bishop chess piece
 module Bishop
-  @possible_moves =
+  @possible_moves = nil
 end

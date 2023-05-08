@@ -1,6 +1,6 @@
 # queen.rb
 
 # Queen Chess Piece
-module QueenChessPiece
-  @possible_moves =
+module Queen
+  @possible_moves = nil
 end
