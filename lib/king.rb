@@ -1,10 +1,8 @@
 # king.rb
-require_relative 'chess_piece'
 
 # King chess piece
-class King < ChessPiece
-  def initialize
-    super()
+module King 
+  # King can move any single square in a straight line from current square
     @possible_moves = [
       [1, 1],
       [-1, -1],
@@ -16,6 +14,4 @@ class King < ChessPiece
       [-1, 0]
     ]
   end
-
-  # King can move any single square in a straight line from current square
 end
