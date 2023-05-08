@@ -83,12 +83,14 @@ class Board
     array
   end
 
+  # generate a 2d array where the first element iterates [0,0], [1,0], [2,0], [3,0]...etc.
   def generate_2d_array
     output = []
     (@columns * @rows).times { |num| output << [num / @columns, num % @rows] }
     output
   end
 
+  # test if [n,m] is within confines of board
   def on_board?(position)
     rows = (0..@rows - 1).to_a
     cols = (0..@columns - 1).to_a
