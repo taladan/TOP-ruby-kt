@@ -5,8 +5,14 @@ module Pieces
   # add piece to board.  Piece must be in three letter format: 'WKi', 'BQu', 'WPa', 'BBi', etc
   # The first letter indicates the color of the piece, the last two letters indicate the piece
   # Also take a named position to add piece to ('a1-h8')
+  @valid_piece_names = %w[WK BK WQ BQ WB BB WN BN WR BR WP BP]
   def add_piece(piece, position)
     raise ArgumentError, 'Invalid Position' unless @valid_squares.include?(position)
+
+    unless @valid_piece_names.include?(piece)
+      raise ArgumentError,
+            "Invalid Piece name: Must be one of: #{@valid_piece_names}"
+    end
 
     square = find_square_by_name(position)
     square.contents = piece
