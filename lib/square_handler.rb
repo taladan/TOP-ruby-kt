@@ -30,12 +30,6 @@ module Squares
 
   private
 
-  #
-  # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
-  def add_current_and_possible_squares(current, possible)
-    [current, possible].transpose.map { |x| x.reduce(:+) }
-  end
-
   # This is a little raw.  If I were to refactor this, I'd set up a setter/getter function for neighbors in square.
   # This sets an unweighted, undirected edge between square and its `key` neighbor
   def add_edge(square, neighbor, key)

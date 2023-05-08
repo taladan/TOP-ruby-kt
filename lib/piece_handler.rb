@@ -38,4 +38,10 @@ module Pieces
     to.contents = from.contents
     from.contents = nil
   end
+  
+  private
+  # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
+  def add_current_and_possible_squares(current, possible)
+    [current, possible].transpose.map { |x| x.reduce(:+) }
+  end
 end
