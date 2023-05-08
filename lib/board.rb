@@ -9,6 +9,7 @@ require_relative 'chess_piece'
 class Board
   include Pieces
   include Squares
+  include Display
   attr_accessor :squares
   attr_reader :columns, :rows, :display
 
@@ -16,7 +17,6 @@ class Board
     @columns = columns
     @rows = rows
     @squares = []
-    @display = Display.new
     @valid_squares = nil
     generate_board
   end
@@ -25,7 +25,7 @@ class Board
   def update_display
     # @rows - 1..0 because we're searching by position
     # Build by row
-    (@rows - 1).downto(0) { |row| puts @display.build_row_string(build_row(row)) }
+    (@rows - 1).downto(0) { |row| puts build_row_string(build_row(row)) }
     linebreak
     printf('     ')
     column_labels.each do |label|
