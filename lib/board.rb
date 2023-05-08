@@ -21,25 +21,7 @@ class Board
     generate_board
   end
 
-  # Display handled by @display
-  def update_display
-    # @rows - 1..0 because we're searching by position
-    # Build by row
-    (@rows - 1).downto(0) { |row| puts build_row_string(build_row(row)) }
-    linebreak
-    printf('     ')
-    column_labels.each do |label|
-      printf('%-6s', label)
-    end
-    linebreak
-  end
-
   private
-
-  # insert newline
-  def linebreak
-    puts ' '
-  end
 
   # create board of squares return nil
   def generate_board
@@ -113,14 +95,5 @@ class Board
     row = position[1]
     col = position[0]
     rows.include?(row) && cols.include?(col)
-  end
-
-  # recurse through all east neighbors, pack square and return when [:e].nil? == true
-  def build_row(row, column = 0, output = [])
-    square = find_square_by_position([column, row])
-    return output << square if square.neighbors[:e].nil?
-
-    output << square
-    build_row(row, column + 1, output)
   end
 end

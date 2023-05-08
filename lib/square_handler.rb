@@ -30,6 +30,15 @@ module Squares
 
   private
 
+  # recurse through all east neighbors, pack square and return when [:e].nil? == true
+  def build_row(row, column = 0, output = [])
+    square = find_square_by_position([column, row])
+    return output << square if square.neighbors[:e].nil?
+
+    output << square
+    build_row(row, column + 1, output)
+  end
+
   # Calculate squares piece can move to.  Accepts two, n-element arrays, returns one n-element array
   def add_current_and_possible_squares(current, possible)
     [current, possible].transpose.map { |x| x.reduce(:+) }
