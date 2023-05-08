@@ -39,7 +39,6 @@ module Pieces
     possible_moves.compact
   end
 
-  require 'pry-byebug'
   # move a piece from a named square to a named square ('a1-h8')
   def move_piece(from_square, to_square, override: false)
     raise ArgumentError, 'Invalid Starting Position' unless @valid_squares.include?(from_square)
@@ -50,7 +49,6 @@ module Pieces
     # place piece where we desire.
     if override == false
       valid_moves = get_square_positions(calculate_possible_squares(from_square))
-      # binding.pry
       unless valid_moves.include?(find_square_by_name(to_square).position)
         raise ArgumentError,
               'Square is not a valid target'
