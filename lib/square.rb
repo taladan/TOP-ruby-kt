@@ -55,7 +55,7 @@ class Square
     { top: pad, middle: mid, bottom: pad }
   end
 
-  def set_positions(arr)
+  def assign_positions(arr)
     @position = arr
     @x = @position[0]
     @y = @position[1]

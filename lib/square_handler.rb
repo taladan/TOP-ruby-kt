@@ -67,8 +67,7 @@ module Squares
   def assign_square_positions
     arr2d = generate_2d_array
     @squares.each_with_index do |square, index|
-      square.set_positions(arr2d[index])
-      # square.set_positions
+      square.assign_positions(arr2d[index])
     end
     nil
   end
