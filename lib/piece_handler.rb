@@ -25,7 +25,7 @@ module Pieces
   end
 
   # Return an array of valid and open squares to move to
-  def calculate_possible_squares(from_square)
+  def calculate_possible_moves(from_square)
     possible_moves = []
     # load piece
     piece = find_square_by_name(from_square).contents
@@ -48,10 +48,11 @@ module Pieces
     # If override is true, we ignore piece's movement patterns and just
     # place piece where we desire.
     if override == false
-      valid_moves = get_square_positions(calculate_possible_squares(from_square))
+      valid_moves = get_square_positions(calculate_possible_moves(from_square))
       unless valid_moves.include?(find_square_by_name(to_square).position)
+
         raise ArgumentError,
-              'Square is not a valid target'
+              "Square #{to_square} is not a valid target"
       end
 
       put_piece(from_square, to_square)
@@ -79,11 +80,15 @@ module Pieces
     from = find_square_by_name(from_square)
     to = find_square_by_name(to_square)
 
+    # load piece
+    piece = from.contents
+
     raise ArgumentError, 'No piece detected in starting Square' if from.contents.nil?
 
     # swap squares contents
     to.contents = from.contents
     from.contents = nil
+    piece.current_square = to
   end
 
   # Validate 2d array position either empty, occupied by teammate, occupied by enemy
