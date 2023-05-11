@@ -9,7 +9,9 @@ class Square
                 :neighbors,
                 :position,
                 :contents,
-                :color
+                :color,
+                :dist,
+                :prev
 
   def initialize(name)
     @name = name
@@ -19,6 +21,9 @@ class Square
     @color = nil
     @x = nil
     @y = nil
+    # Required for Knight's Travails
+    @dist = 0
+    @prev = nil
   end
 
   # Assign square color based on position within board.  Upper left & Lower right squares == whitejj
