@@ -21,6 +21,17 @@ class Board
     generate_board
   end
 
+  # test if [n,m] is within confines of board
+  def on_board?(position)
+    return nil if position.nil?
+
+    rows = (0..@rows - 1).to_a
+    cols = (0..@columns - 1).to_a
+    row = position[1]
+    col = position[0]
+    rows.include?(row) && cols.include?(col)
+  end
+
   private
 
   # is the queried square a boundary square?
@@ -79,15 +90,6 @@ class Board
     output = []
     (@columns * @rows).times { |num| output << [num / @columns, num % @rows] }
     output
-  end
-
-  # test if [n,m] is within confines of board
-  def on_board?(position)
-    rows = (0..@rows - 1).to_a
-    cols = (0..@columns - 1).to_a
-    row = position[1]
-    col = position[0]
-    rows.include?(row) && cols.include?(col)
   end
 
   # create an array of row numbers from 1
